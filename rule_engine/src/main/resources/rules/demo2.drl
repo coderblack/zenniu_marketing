@@ -1,0 +1,18 @@
+package rules;
+
+import cn.doitedu.rulemk.demos.flink_drools.DataBean
+import org.apache.commons.lang.StringUtils
+
+rule "demo2"
+
+    when
+      $bean:DataBean()
+
+    then
+       String data = $bean.getData();
+       if(data.startsWith("a")){
+          $bean.setResult(data+" how are you");
+       }else{
+          $bean.setResult(data+" how old are you");
+       }
+end

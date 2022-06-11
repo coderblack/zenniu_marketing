@@ -1,0 +1,108 @@
+{
+  "keyByFields": "deviceId",
+
+  "matchLimit": 0,
+
+  "onTimer": true,
+
+  "ruleId": "rule_001",
+
+  "triggerEventCondition": {
+    "eventId": "K",
+    "eventProps": {},
+    "maxLimit": 999,
+    "minLimit": 1,
+    "timeRangeEnd": 2000000000000,
+    "timeRangeStart": 1000000000000
+  },
+
+  "eventCombinationConditionList": [
+    {
+      "cacheId": "001",
+      "eventConditionList": [
+        {
+          "eventId": "C",
+          "eventProps": {},
+          "maxLimit": 999,
+          "minLimit": 1,
+          "timeRangeEnd": 2000000000000,
+          "timeRangeStart": 1000000000000
+        }
+      ],
+      "matchPattern": "(1)",
+      "maxLimit": 999,
+      "minLimit": 1,
+      "querySql": "SELECT eventId from zenniu_detail where eventId='C' and deviceId=? and timeStamp between ? and ? ",
+      "sqlType": "ck",
+      "timeRangeEnd": 2000000000000,
+      "timeRangeStart": 1000000000000
+    },
+    {
+      "cacheId": "002",
+      "eventConditionList": [
+        {
+          "eventId": "A",
+          "eventProps": {},
+          "maxLimit": 999,
+          "minLimit": 1,
+          "timeRangeEnd": 2000000000000,
+          "timeRangeStart": 1000000000000
+        },
+        {
+          "eventId": "C",
+          "eventProps": {},
+          "maxLimit": 999,
+          "minLimit": 1,
+          "timeRangeEnd": 2000000000000,
+          "timeRangeStart": 1000000000000
+        },
+        {
+          "eventId": "F",
+          "eventProps": {"p1": "v1"},
+          "maxLimit": 999,
+          "minLimit": 1,
+          "timeRangeEnd": 2000000000000,
+          "timeRangeStart": 1000000000000
+        }
+      ],
+      "matchPattern": "(1.*2.*3)",
+      "maxLimit": 999,
+      "minLimit": 1,
+      "querySql": "select eventId from zenniu_detail where deviceId = ?  and timeStamp between ? and ? and ((eventId='A' ) or (eventId='C' ) or (eventId='F')",
+      "sqlType": "ck",
+      "timeRangeEnd": 2000000000000,
+      "timeRangeStart": 1000000000000
+    }
+  ],
+
+  "timerConditionList": [
+    {
+      "eventCombinationConditionList": [
+        {
+          "cacheId": "004",
+          "eventConditionList": [
+            {
+              "eventId": "H",
+              "eventProps": {},
+              "maxLimit": 0,
+              "minLimit": 0,
+              "timeRangeEnd": 20000000000000,
+              "timeRangeStart": 1000000000000
+            }
+          ],
+          "maxLimit": 0,
+          "minLimit": 0,
+          "timeRangeEnd": 0,
+          "timeRangeStart": 0
+        }
+      ],
+      "timeLate": 1800000
+    }
+  ],
+
+  "userProfileConditions": {"tag1": "v1","tag2": "v2"}
+}
+
+
+
+

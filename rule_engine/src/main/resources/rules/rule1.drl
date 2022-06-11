@@ -1,0 +1,25 @@
+package cn.doitedu.drools.demo
+
+import cn.doitedu.rulemk.demos.Person
+import cn.doitedu.rulemk.demos.Cat
+
+// 定义本规则的名称
+rule "rule1"
+
+// 匹配条件，LHS
+when
+    $p:Person( cat.pinZhong == "英短" && nickNames contains "jack" && job == "manager")
+    //$p:Person( nickNames contains "jack" && job == "manager")
+    //$cat:Cat(pinZhong == "英短" ) from $p
+
+// 要执行的逻辑，RHS
+then
+   if($p.getAge()>30){
+      System.out.println("虽然我很爱你 " + $p.getName() +", 但是我不喜欢大叔" );
+      System.out.println("当然，如果你有足够多的money,在我眼里你就是18");
+      $p.setAge(18);
+      update($p);
+   } else{
+      System.out.println("虽然我很爱你 " + $p.getName() +", 但是我不喜欢小屁孩" );
+   }
+end

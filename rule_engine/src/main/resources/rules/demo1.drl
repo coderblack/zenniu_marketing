@@ -1,0 +1,19 @@
+package rules;
+
+import cn.doitedu.rulemk.demos.flink_drools.DataBean
+import org.apache.commons.lang.StringUtils
+
+rule "demo1"
+
+    when
+      $bean:DataBean()
+
+    then
+       String data = $bean.getData();
+       if(StringUtils.isNumeric(data)){
+           double v = Double.parseDouble(data);
+           $bean.setResult((v*100)+"");
+       }else{
+           $bean.setResult($bean.getData().toUpperCase());
+       }
+end

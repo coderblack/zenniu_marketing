@@ -1,0 +1,38 @@
+{
+  "eventCombinationConditionList": [
+    {
+      "cacheId": "003",
+      "eventConditionList": [
+        {
+          "eventId": "X",
+          "eventProps": {},
+          "maxLimit": 999,
+          "minLimit": 3,
+          "timeRangeEnd": 2000000000000,
+          "timeRangeStart": 1627702200000
+        }
+      ],
+      "matchPattern": "(1)",
+      "maxLimit": 3,
+      "minLimit": 3,
+      "querySql": "select eventId from zenniu_detail where ip=? and timeStamp between ? and ?",
+      "sqlType": "ck",
+      "timeRangeEnd": 2000000000000,
+      "timeRangeStart": 1000002200000
+    }
+
+  ],
+  "keyByFields": "ip",
+  "matchLimit": 0,
+  "onTimer": false,
+  "ruleId": "rule_002",
+  "triggerEventCondition": {
+    "eventId": "X",
+    "eventProps": {},
+    "maxLimit": 0,
+    "minLimit": 0,
+    "timeRangeEnd": 2000000000000,
+    "timeRangeStart": 1000000000000
+  },
+  "userProfileConditions": {}
+}

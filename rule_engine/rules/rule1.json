@@ -1,0 +1,73 @@
+{
+  "eventCombinationConditionList": [
+    {
+      "cacheId": "001",
+      "eventConditionList": [
+        {
+          "eventId": "C",
+          "eventProps": {},
+          "maxLimit": 999,
+          "minLimit": 1,
+          "timeRangeEnd": 2000000000000,
+          "timeRangeStart": 1000000000000
+        }
+      ],
+      "matchPattern": "(1)",
+      "maxLimit": 999,
+      "minLimit": 1,
+      "querySql": "SELECT eventId from zenniu_detail where eventId='C' and deviceId=? and timeStamp between ? and ? ",
+      "sqlType": "ck",
+      "timeRangeEnd": 2000000000000,
+      "timeRangeStart": 1000000000000
+    },
+    {
+      "cacheId": "002",
+      "eventConditionList": [
+        {
+          "eventId": "A",
+          "eventProps": {},
+          "maxLimit": 999,
+          "minLimit": 1,
+          "timeRangeEnd": 2000000000000,
+          "timeRangeStart": 1000000000000
+        },
+        {
+          "eventId": "C",
+          "eventProps": {},
+          "maxLimit": 999,
+          "minLimit": 1,
+          "timeRangeEnd": 2000000000000,
+          "timeRangeStart": 1000000000000
+        },
+        {
+          "eventId": "F",
+          "eventProps": {},
+          "maxLimit": 999,
+          "minLimit": 1,
+          "timeRangeEnd": 2000000000000,
+          "timeRangeStart": 1000000000000
+        }
+      ],
+      "matchPattern": "(1.*2.*3)",
+      "maxLimit": 999,
+      "minLimit": 1,
+      "querySql": "select eventId from zenniu_detail where deviceId = ?  and timeStamp between ? and ? and ((eventId='A' ) or (eventId='C' ) or (eventId='F' ))",
+      "sqlType": "ck",
+      "timeRangeEnd": 2000000000000,
+      "timeRangeStart": 1000000000000
+    }
+  ],
+  "keyByFields": "deviceId",
+  "matchLimit": 0,
+  "onTimer": false,
+  "ruleId": "rule_001",
+  "triggerEventCondition": {
+    "eventId": "K",
+    "eventProps": {},
+    "maxLimit": 999,
+    "minLimit": 1,
+    "timeRangeEnd": 2000000000000,
+    "timeRangeStart": 1000000000000
+  },
+  "userProfileConditions": {}
+}

@@ -1,0 +1,62 @@
+import cn.doitedu.rulemk.marketing.beans.RuleControllerFact
+import cn.doitedu.rulemk.marketing.beans.MarketingRule
+import cn.doitedu.rulemk.marketing.beans.EventBean
+import cn.doitedu.rulemk.marketing.beans.EventCondition
+import cn.doitedu.rulemk.marketing.utils.EventUtil
+import java.util.Map
+import cn.doitedu.rulemk.marketing.beans.EventCombinationCondition
+import java.util.List
+import cn.doitedu.rulemk.marketing.service.TriggerModeRulelMatchServiceImpl
+import cn.doitedu.rulemk.marketing.beans.TimerMatchDroolsFact
+import cn.doitedu.rulemk.marketing.beans.TimerCondition
+
+rule "rule_2"
+//  profile condition || eventCombination condition
+when
+   $fact:RuleControllerFact()
+then
+   if($fact.getTimerMatchDroolsFact() == null){
+       MarketingRule rule = $fact.getMarketingRule();
+       EventBean eventBean = $fact.getEventBean();
+       TriggerModeRulelMatchServiceImpl service = $fact.getTriggerModeRulelMatchService();
+       EventCondition triggerEventCondition = rule.getTriggerEventCondition();
+       // judge the trigger event == match the trigger condition
+       if (EventUtil.eventMatchCondition(eventBean, triggerEventCondition)) {
+             // get the user profile conditions
+             Map<String, String> userProfileConditions = rule.getUserProfileConditions();
+             // judge user profile conditions if match
+             if (userProfileConditions != null && userProfileConditions.size() > 0) {
+                 boolean b = service.matchProfileCondition(userProfileConditions, eventBean.getKeyByValue());
+
+
+                 // if the user profile conditions is not match
+                 if(!b){
+                       // get all eventCombination conditions
+                       List<EventCombinationCondition> eventCombinationConditionList = rule.getEventCombinationConditionList();
+                       if (eventCombinationConditionList != null && eventCombinationConditionList.size() > 0) {
+                           EventCombinationCondition eventCombinationCondition = eventCombinationConditionList.get(0);
+                           boolean b2 = service.matchEventCombinationCondition(eventCombinationCondition, eventBean);
+                           $fact.setMatchResult(b2);
+                       }
+                 }else{
+                     $fact.setMatchResult(b);
+                 }
+             }
+       }
+   }
+   else if ($fact.getTimerMatchDroolsFact() != null){
+       TimerMatchDroolsFact timerMatchDroolsFact = $fact.getTimerMatchDroolsFact();
+       TimerCondition timerCondition = timerMatchDroolsFact.getTimerCondition();
+       List<EventCombinationCondition> eccList = timerCondition.getEventCombinationConditionList();
+       TriggerModeRulelMatchServiceImpl triggerModeRulelMatchService = $fact.getTriggerModeRulelMatchService();
+       for (EventCombinationCondition ecc : eccList) {
+           ecc.setTimeRangeStart(timerMatchDroolsFact.getQueryStartTime());
+           ecc.setTimeRangeEnd(timerMatchDroolsFact.getQueryEndTime());
+           EventBean eb = new EventBean();
+           eb.setKeyByValue(timerMatchDroolsFact.getKeyByValue());
+           eb.setTimeStamp(timerMatchDroolsFact.getQueryEndTime());
+           boolean res = triggerModeRulelMatchService.matchEventCombinationCondition(ecc, eb);
+           timerMatchDroolsFact.setTimerMatchResult(res);
+       }
+   }
+end

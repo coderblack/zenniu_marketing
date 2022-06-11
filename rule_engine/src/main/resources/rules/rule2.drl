@@ -1,0 +1,18 @@
+package cn.doitedu.drools.demo
+
+import cn.doitedu.rulemk.demos.Student
+import cn.doitedu.rulemk.demos.Teacher
+
+// 定义本规则的名称
+rule "rule2"
+
+// 匹配条件，LHS
+when
+    $student:Student()
+    $teacher:Teacher()
+
+// 要执行的逻辑，RHS
+then
+  int sum = $student.getAge()+$teacher.getAge();
+  $student.setAge(sum);
+end

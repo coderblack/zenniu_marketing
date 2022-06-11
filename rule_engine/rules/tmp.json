@@ -1,0 +1,46 @@
+{
+  "data": [
+    {
+      "id": "1",
+      "rule_name": "rule_2",
+      "rule_condition_json": "{\r\n  \"eventCombinationConditionList\": [\r\n    {\r\n      \"cacheId\": \"003\",\r\n      \"eventConditionList\": [\r\n        {\r\n          \"eventId\": \"X\",\r\n          \"eventProps\": {},\r\n          \"maxLimit\": 999,\r\n          \"minLimit\": 3,\r\n          \"timeRangeEnd\": 2000000000000,\r\n          \"timeRangeStart\": 1627702200000\r\n        }\r\n      ],\r\n      \"matchPattern\": \"(1)\",\r\n      \"maxLimit\": 3,\r\n      \"minLimit\": 3,\r\n      \"querySql\": \"select eventId from zenniu_detail where ip=? and timeStamp between ? and ?\",\r\n      \"sqlType\": \"ck\",\r\n      \"timeRangeEnd\": 2000000000000,\r\n      \"timeRangeStart\": 1000002200000\r\n    }\r\n\r\n  ],\r\n  \"keyByFields\": \"ip\",\r\n  \"matchLimit\": 0,\r\n  \"onTimer\": false,\r\n  \"ruleId\": \"rule_002\",\r\n  \"triggerEventCondition\": {\r\n    \"eventId\": \"X\",\r\n    \"eventProps\": {},\r\n    \"maxLimit\": 0,\r\n    \"minLimit\": 0,\r\n    \"timeRangeEnd\": 2000000000000,\r\n    \"timeRangeStart\": 1000000000000\r\n  },\r\n  \"userProfileConditions\": {}\r\n}",
+      "rule_controller_drl": "import cn.doitedu.rulemk.marketing.beans.RuleControllerFact\r\nimport cn.doitedu.rulemk.marketing.beans.MarketingRule\r\nimport cn.doitedu.rulemk.marketing.beans.EventBean\r\nimport cn.doitedu.rulemk.marketing.beans.EventCondition\r\nimport cn.doitedu.rulemk.marketing.utils.EventUtil\r\nimport java.util.Map\r\nimport cn.doitedu.rulemk.marketing.beans.EventCombinationCondition\r\nimport java.util.List\r\nimport cn.doitedu.rulemk.marketing.service.TriggerModeRulelMatchServiceImpl\r\n\r\nrule \"rule_2\"\r\n\r\nwhen\r\n   $fact:RuleControllerFact()\r\n\r\nthen\r\n        MarketingRule rule = $fact.getMarketingRule();\r\n        EventBean eventBean = $fact.getEventBean();\r\n        TriggerModeRulelMatchServiceImpl triggerModeRulelMatchService = $fact.getTriggerModeRulelMatchService();\r\n        EventCondition triggerEventCondition = rule.getTriggerEventCondition();\r\n        if (EventUtil.eventMatchCondition(eventBean, triggerEventCondition)) {\r\n\r\n              Map<String, String> userProfileConditions = rule.getUserProfileConditions();\r\n              if (userProfileConditions != null && userProfileConditions.size() > 0) {\r\n                  boolean b = triggerModeRulelMatchService.matchProfileCondition(userProfileConditions, eventBean.getKeyByValue());\r\n                  if(!b){\r\n                        List<EventCombinationCondition> eventCombinationConditionList = rule.getEventCombinationConditionList();\r\n                        if (eventCombinationConditionList != null && eventCombinationConditionList.size() > 0) {\r\n                            EventCombinationCondition eventCombinationCondition = eventCombinationConditionList.get(0);\r\n                            boolean b2 = triggerModeRulelMatchService.matchEventCombinationCondition(eventCombinationCondition, eventBean);\r\n                            $fact.setMatchResult(b2);\r\n                        }\r\n\r\n                  }else{\r\n                      $fact.setMatchResult(b);\r\n                  }\r\n              }\r\n        }\r\n\r\nend",
+      "rule_status": "1",
+      "create_time": "2021-08-02 10:15:30",
+      "modify_time": "2021-08-02 10:15:30",
+      "author": "doitedu"
+    }
+  ],
+  "database": "abc",
+  "es": 1627872161000,
+  "id": 3,
+  "isDdl": false,
+  "mysqlType": {
+    "id": "int",
+    "rule_name": "varchar(255)",
+    "rule_condition_json": "varchar(10240)",
+    "rule_controller_drl": "varchar(40960)",
+    "rule_status": "varchar(1)",
+    "create_time": "datetime",
+    "modify_time": "datetime",
+    "author": "varchar(255)"
+  },
+  "old": null,
+  "pkNames": [
+    "id"
+  ],
+  "sql": "",
+  "sqlType": {
+    "id": 4,
+    "rule_name": 12,
+    "rule_condition_json": 12,
+    "rule_controller_drl": 12,
+    "rule_status": 12,
+    "create_time": 93,
+    "modify_time": 93,
+    "author": 12
+  },
+  "table": "rule_demo",
+  "ts": 1627872161393,
+  "type": "INSERT"
+}
